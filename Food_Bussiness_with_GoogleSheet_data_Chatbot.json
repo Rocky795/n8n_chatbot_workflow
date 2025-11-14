@@ -1,0 +1,304 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "90cf1ca0-ea25-4633-93a4-713b3fa6e86a",
+      "name": "When chat message received",
+      "webhookId": "1a955d20-00f6-4276-9d93-ea645e63b5b5"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You must only order from the food in our inventory list. If it's not available, don't order it. Reply, it's not available."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        288,
+        0
+      ],
+      "id": "43a48df4-2109-4a27-8398-208fc9df801f",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        224,
+        224
+      ],
+      "id": "29e1e71b-de6b-4f38-a9af-e9ebcb43a35c",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "6FbUH5LGeOQnYBXo",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1jBAjuHuEwDzSe9nAdJqdOMt9xHP-S_FTtd2pyKa34p0",
+          "mode": "list",
+          "cachedResultName": "Hotal Food Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jBAjuHuEwDzSe9nAdJqdOMt9xHP-S_FTtd2pyKa34p0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Inventory",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jBAjuHuEwDzSe9nAdJqdOMt9xHP-S_FTtd2pyKa34p0/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        480,
+        224
+      ],
+      "id": "3f21a18d-b293-4759-b449-c2aaaaf64580",
+      "name": "Get Inventory",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bmazFeifI3I705Dy",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        352,
+        256
+      ],
+      "id": "de49cfc1-4ff6-4b5c-86cb-dc036536bc0e",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1jBAjuHuEwDzSe9nAdJqdOMt9xHP-S_FTtd2pyKa34p0",
+          "mode": "list",
+          "cachedResultName": "Hotal Food Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jBAjuHuEwDzSe9nAdJqdOMt9xHP-S_FTtd2pyKa34p0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 939368992,
+          "mode": "list",
+          "cachedResultName": "FAQ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jBAjuHuEwDzSe9nAdJqdOMt9xHP-S_FTtd2pyKa34p0/edit#gid=939368992"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        592,
+        208
+      ],
+      "id": "9d291705-ec5d-45f2-9b72-c810af557e6b",
+      "name": "FAQ",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bmazFeifI3I705Dy",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1jBAjuHuEwDzSe9nAdJqdOMt9xHP-S_FTtd2pyKa34p0",
+          "mode": "list",
+          "cachedResultName": "Hotal Food Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jBAjuHuEwDzSe9nAdJqdOMt9xHP-S_FTtd2pyKa34p0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 853543801,
+          "mode": "list",
+          "cachedResultName": "Order",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1jBAjuHuEwDzSe9nAdJqdOMt9xHP-S_FTtd2pyKa34p0/edit#gid=853543801"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Customer Name": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Customer_Name', ``, 'string') }}",
+            "Food Item": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Food_Item', ``, 'string') }}",
+            "Quantity Ordered": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Quantity_Ordered', ``, 'string') }}",
+            "Order date": "={{ $now.format('yyyy-MM-dd-hh-mm-ss') }}",
+            "status": "=Pending"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Customer Name",
+              "displayName": "Customer Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Food Item",
+              "displayName": "Food Item",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Quantity Ordered",
+              "displayName": "Quantity Ordered",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Order date",
+              "displayName": "Order date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        592,
+        208
+      ],
+      "id": "d740a928-27ff-400c-a6c4-36770f5e54d4",
+      "name": "Current Orders",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "bmazFeifI3I705Dy",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Inventory": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FAQ": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Current Orders": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "711d4866-da27-4e9f-8cf1-8fbd86be5b13",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "aa85904280b6eb839e358983ef7bc3a715ca206a94d8bf9357da0043d7ee29ab"
+  },
+  "id": "oftR9o6meGgW9m92",
+  "tags": []
+}
